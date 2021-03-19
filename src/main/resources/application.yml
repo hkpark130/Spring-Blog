@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: localhost
+
+---
+spring:
+  profiles: docker-compose
+#   datasource:
+#     url: jdbc:mysql://db/spring_db
+#     username: root
+#     password: password
+#     driver-class-name: com.mysql.cj.jdbc.Driver
+#   jpa:
+#     hibernate:
+#       ddl-auto: update
+server:
+  port: 8100

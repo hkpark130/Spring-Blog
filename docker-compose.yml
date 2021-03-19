@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  spring:
+    container_name: backend-spring-app
+    build: .
+    expose:
+      - 8100
+    ports:
+      - "8100:8100"
+    volumes:
+      - .:/app
+    # environment:
+    #   spring.datasource.driverClassName: "com.mysql.cj.jdbc.Driver"
+    #   spring.datasource.url: "jdbc:mysql://db/spring_db"
+    #   spring.datasource.username: "root"
+    #   spring.datasource.password: "password"
