@@ -9,8 +9,10 @@ services:
       - "8100:8100"
     volumes:
       - .:/app
-    # environment:
-    #   spring.datasource.driverClassName: "com.mysql.cj.jdbc.Driver"
-    #   spring.datasource.url: "jdbc:mysql://db/spring_db"
-    #   spring.datasource.username: "root"
-    #   spring.datasource.password: "password"
+    environment:
+      server.ssl.key-password: ${KEY_PW}
+      server.ssl.key-store-password: ${KEY_PW}
+      spring.datasource.driverClassName: "org.mariadb.jdbc.Driver"
+      spring.datasource.url: ${RDS_URL}
+      spring.datasource.username: ${RDS_USER}
+      spring.datasource.password: ${RDS_PW}
