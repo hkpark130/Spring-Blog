@@ -1,6 +1,10 @@
 spring:
   profiles:
     active: localhost
+
+---
+spring:
+  profiles: local
   jpa:
     show_sql: true
     properties:
@@ -28,9 +32,9 @@ spring:
     hibernate:
       ddl-auto: update
 server:
-   ssl:
-     enable: true
-     key-store: "classpath:keystore.p12"
-#     key-store-password: '${KEY_PW}'
-#     key-password: '${KEY_PW}'
-   port: 8100
+  ssl:
+    enable: true
+    key-store: "classpath:keystore.p12"
+  #     key-store-password: '${KEY_PW}'
+  #     key-password: '${KEY_PW}'
+  port: 8100

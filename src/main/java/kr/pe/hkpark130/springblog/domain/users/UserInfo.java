@@ -24,8 +24,8 @@ public class UserInfo extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", unique = true)
-    private String email;
+    @Column(name = "username", unique = true)
+    private String username;
 
     @Column(name = "password")
     private String password;
@@ -34,13 +34,13 @@ public class UserInfo extends BaseTimeEntity implements UserDetails {
     private String auth;
 
     @Builder
-    public UserInfo(String email, String password, String auth) {
-        this.email = email;
+    public UserInfo(String username, String password, String auth) {
+        this.username = username;
         this.password = password;
         this.auth = auth;
     }
 
-    //사용자의 권한
+    //사용자의 권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> roles = new HashSet<>();
@@ -53,7 +53,7 @@ public class UserInfo extends BaseTimeEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
