@@ -9,5 +9,8 @@ then
   docker rm $CONTAINER_ID
 fi
 
+cd /home/ec2-user/spring
+sh gradlew clean
 sh gradlew build
-docker-compose up --build -d
+docker-compose build --no-cache
+docker-compose up --build
