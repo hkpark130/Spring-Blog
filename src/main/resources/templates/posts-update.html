@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorator="layouts/layout">
+
+    <div layout:fragment="content">
+        <div class='container'>
+            <h1>게시글 수정</h1> <hr>
+
+            <div class="col-md-12">
+                <form>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="hidden" id="id" th:value="${post.id}">
+                    <div class="form-group">
+                        <label for="title"> 제목 </label>
+                        <input type="text" class="form-control" id="title" th:value="${post.title}">
+                    </div>
+                    <div class="form-group">
+                        <label for="contents"> 내용 </label>
+                        <textarea class="form-control" id="contents" rows="10" th:text="${post.contents}"></textarea>
+                    </div>
+                </form>
+                <div class="border" id="result" th:utext="${post.contents}"></div>
+                <a th:href="@{'/posts/'+${post.id}}" role="button" class="btn btn-secondary">취소</a>
+                <button type="button" class="btn btn-primary" id="btn-update">수정 완료</button>
+                <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+            </div>
+        </div>
+    </div>
+</html>
