@@ -21,6 +21,13 @@ public class PostDto {
         this.contents = contents;
     }
 
+    public PostDto(Posts entity){
+        this.id = entity.getId();
+        this.title = entity.getTitle();
+        this.contents = entity.getContents();
+        this.modifiedDate = entity.getModifiedDate();
+    } // 인덱스 화면에 뿌려주기 위한 생성자(findAllDesc) or findById
+
     public Posts toEntity() {
         return Posts.builder()
                 .title(title)

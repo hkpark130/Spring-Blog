@@ -7,7 +7,9 @@
     <div layout:fragment="content">
         <div class='container'>
             <h1>Login</h1> <hr>
-
+            <div class="col text-center">
+                <a href="/" class="btn btn-success btn-block"> Home</a>
+            </div><br>
             <form th:action="@{/login}" method="POST">
                 <div class="form-group">
                     <input type="text" name="username" class="form-control" placeholder="Username"/>
@@ -18,8 +20,7 @@
                 <button class="btn btn-primary" type="submit">Login</button>
             </form>
 
-            <a href="/signup">회원가입 (개발여부 미정)</a><br>
-            <a href="/">Home</a>
+            <a href="/signup">회원가입 (신규가입 제한중)</a>
         </div>
     </div>
 

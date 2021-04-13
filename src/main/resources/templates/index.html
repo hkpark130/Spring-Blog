@@ -5,11 +5,9 @@
         layout:decorator="layouts/layout">
 <div layout:fragment="content" class="container">
     <h1>스프링 블로그</h1> <hr>
-    <div class="col-md-9">
+    <div class="col-md-12">
         <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
-            <div class="col-md-6">
-                <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
-            </div>
+            <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
         </div>
         <br>
         <table class="table table-horizontal table-bordered">
@@ -24,7 +22,7 @@
             <tr th:each="post : ${posts}">
                 <td th:text="${post.id}"></td>
                 <td>
-                    <a th:href="@{'/posts/update/'+${post.id}}" th:text="${post.title}"/>
+                    <a th:href="@{'/posts/'+${post.id}}" th:text="${post.title}"/>
                 </td>
                 <td th:text="${post.modifiedDate}"></td>
             </tr>
