@@ -10,6 +10,7 @@ services:
     volumes:
       - .:/app
     environment:
+      TZ: "Asia/Seoul"
       server.ssl.key-password: ${KEY_PW}
       server.ssl.key-store-password: ${KEY_PW}
       spring.datasource.driverClassName: "org.mariadb.jdbc.Driver"
