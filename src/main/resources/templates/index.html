@@ -24,7 +24,7 @@
                 <td>
                     <a th:href="@{'/posts/'+${post.id}}" th:text="${post.title}"/>
                 </td>
-                <td th:text="${post.modifiedDate}"></td>
+                <td th:text="${#temporals.format(post.modifiedDate, 'yyyy/MM/dd HH:mm')}"></td>
             </tr>
             </tbody>
         </table>
