@@ -21,7 +21,11 @@ var main = {
             _this.update();
         });
         $('#btn-delete').on('click', function() {
-            _this.delete();
+            var flag = confirm("진짜 삭제하시겠습니까?");
+
+            if(flag == true){
+              _this.delete();
+            }
         });
 
     },
