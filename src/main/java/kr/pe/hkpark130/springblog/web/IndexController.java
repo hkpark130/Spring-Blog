@@ -7,8 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.TreeMap;
 
 @RequiredArgsConstructor
 @Controller
@@ -16,15 +20,31 @@ public class IndexController {
 
     private final PostsService postsService;
     private final HttpSession httpSession;
+    private static final int PAGE_BLOCK = 5;  // 하단 페이지 리스트 수
+    private static final int PER_PAGE = 10;   // 한 페이지에 보여줄 게시글 수
 
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("posts", postsService.findAllDesc());
+    @GetMapping({"/", "/etc", "/network", "/work", "/programming"})
+    public String index(Model model, HttpServletRequest request, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
+        String category = request.getRequestURI().substring(1);
+        Integer offsetPage = (pageNum - 1) * PER_PAGE;
+        List<PostDto> postList;
+
+        if(category.length() == 0){
+            postList = postsService.findAllDesc(offsetPage, PER_PAGE);
+        } else {
+            postList = postsService.findCategoryDesc(category, offsetPage, PER_PAGE);
+        }
+        TreeMap<Integer, String> pageList = postsService.getPageAllList(category, PER_PAGE, PAGE_BLOCK, pageNum);
+        model.addAttribute("posts", postList);
+        model.addAttribute("pageList", pageList);
+
         String username = (String) httpSession.getAttribute("username");
-
         if (username != null){
             model.addAttribute("user", username);
         }
+
+        model.addAttribute("activePage", pageNum);
+        model.addAttribute("category", category);
         return "index";
     }
 

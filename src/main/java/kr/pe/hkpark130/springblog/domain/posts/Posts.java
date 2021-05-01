@@ -22,15 +22,20 @@ public class Posts extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String contents;
 
+    @Column(columnDefinition = "varchar(255) default 'etc'")
+    private String category;
+
     @Builder
-    public Posts(String title, String contents){
+    public Posts(String title, String contents, String category){
         this.title = title;
         this.contents = contents;
+        this.category = category;
     };
 
-    public void update(String title, String contents){
+    public void update(String title, String contents, String category){
         this.title = title;
         this.contents = contents;
+        this.category = category;
     }
 
 }
