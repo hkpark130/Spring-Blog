@@ -9,20 +9,22 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity
+@Entity(name = "posts")
+@Table(name = "posts")
 public class Posts extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 500, nullable = false, name = "title")
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "contents")
     private String contents;
 
-    @Column(columnDefinition = "varchar(255) default 'etc'")
+    @Column(columnDefinition = "varchar(255) default 'etc'", name = "category")
     private String category;
 
     @Builder
