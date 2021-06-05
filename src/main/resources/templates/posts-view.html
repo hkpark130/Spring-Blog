@@ -18,6 +18,25 @@
 <!--                <a th:href="@{'/posts/update/'+${post.id}}" role="button" class="btn btn-success" sec:authorize="hasRole('ROLE_ADMIN')">수정</a>-->
                 <a th:href="@{'/posts/update/'+${post.id}}" role="button" class="btn btn-success">수정</a>
         </div>
+
+        <div class="col-md-12">
+            <ul>
+                <li class="media">
+                    <div class="media-body">
+                        test
+                    </div>
+                </li>
+            </ul>
+            <div class="row">
+                <label for="comment"> 댓글 쓰기 </label>
+                <input type="text" class="form-control" id="comment">
+            </div>
+            <br>
+            <div class="row">
+                <button type="button" class="btn btn-light" id="btn-comment">댓글</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
