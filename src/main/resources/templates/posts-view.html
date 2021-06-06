@@ -19,22 +19,35 @@
                 <a th:href="@{'/posts/update/'+${post.id}}" role="button" class="btn btn-success">수정</a>
         </div>
 
-        <div class="col-md-12">
-            <ul>
-                <li class="media">
-                    <div class="media-body">
-                        test
+        <div class="row">
+            <div class="col-md-12">
+                <label for="comment"> 댓글 쓰기 </label>
+                <input type="text" class="form-control" id="comment" style="margin-bottom:5px;">
+                <div class="row justify-content-end">
+                    <button type="button" class="btn btn-primary" id="btn-comment">댓글</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100">
+            <ul class="w-100" th:each="comment : ${comments}">
+                <li class="w-100 media">
+                    <div class="w-100">
+                        <div class="media-body col-md-12">
+                            <h5 th:text="${comment.user_id.username}">Guest</h5>
+                        </div>
+                        <div class="row media-body">
+                            <div class="comment col-md-10" th:text="${comment.content}">
+                                test comment
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-light" id="btn-mod">수정</button>
+                                <button type="button" class="btn btn-light" id="btn-del">삭제</button>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>
-            <div class="row">
-                <label for="comment"> 댓글 쓰기 </label>
-                <input type="text" class="form-control" id="comment">
-            </div>
-            <br>
-            <div class="row">
-                <button type="button" class="btn btn-light" id="btn-comment">댓글</button>
-            </div>
         </div>
 
     </div>

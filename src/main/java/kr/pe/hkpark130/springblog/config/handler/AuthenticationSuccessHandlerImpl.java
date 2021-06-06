@@ -29,15 +29,16 @@ public class AuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticationSuc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         // TODO Auto-generated method stub
-        String userName = "";
+        UserInfo userInfo;
 
-        if(authentication.getPrincipal() instanceof Principal) {
-            userName = ((Principal)authentication.getPrincipal()).getName();
-        } else {
-            userName = ((UserInfo)authentication.getPrincipal()).getUsername();
-        }
+//        if(authentication.getPrincipal() instanceof Principal) {
+//            userName = ((Principal)authentication.getPrincipal()).getName();
+//        } else {
+//            userName = ((UserInfo)authentication.getPrincipal()).getUsername();
+//        }
+        userInfo = (UserInfo)authentication.getPrincipal();
 
-        session.setAttribute("username", userName);
+        session.setAttribute("user", userInfo);
         super.onAuthenticationSuccess(request, response, authentication);
 
     }

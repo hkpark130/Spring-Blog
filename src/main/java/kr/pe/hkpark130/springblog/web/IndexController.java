@@ -1,6 +1,9 @@
 package kr.pe.hkpark130.springblog.web;
 
+import kr.pe.hkpark130.springblog.domain.users.UserInfo;
+import kr.pe.hkpark130.springblog.service.comments.CommentsService;
 import kr.pe.hkpark130.springblog.service.posts.PostsService;
+import kr.pe.hkpark130.springblog.web.dto.CommentDto;
 import kr.pe.hkpark130.springblog.web.dto.PostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,7 @@ import java.util.TreeMap;
 public class IndexController {
 
     private final PostsService postsService;
+    private final CommentsService commentsService;
     private final HttpSession httpSession;
     private static final int PAGE_BLOCK = 5;  // 하단 페이지 리스트 수
     private static final int PER_PAGE = 10;   // 한 페이지에 보여줄 게시글 수
@@ -38,9 +42,9 @@ public class IndexController {
         model.addAttribute("posts", postList);
         model.addAttribute("pageList", pageList);
 
-        String username = (String) httpSession.getAttribute("username");
-        if (username != null){
-            model.addAttribute("user", username);
+        UserInfo user = (UserInfo) httpSession.getAttribute("user");
+        if (user != null){
+            model.addAttribute("user", user);
         }
 
         model.addAttribute("activePage", pageNum);
@@ -62,8 +66,19 @@ public class IndexController {
 
     @GetMapping("/posts/{id}")
     public String postView(@PathVariable Long id, Model model) {
-        PostDto dto = postsService.findById(id);
-        model.addAttribute("post", dto);
+        PostDto postDto = postsService.findById(id);
+        model.addAttribute("post", postDto);
+
+        List<CommentDto> commentList;
+        commentList = commentsService.findAll(id);
+        model.addAttribute("comments", commentList);
+
+        UserInfo user = (UserInfo) httpSession.getAttribute("user");
+        if (user != null){
+            model.addAttribute("user", user);
+        }
+
+
         return "posts-view";
     }
 

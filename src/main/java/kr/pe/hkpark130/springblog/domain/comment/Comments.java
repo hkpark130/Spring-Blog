@@ -21,14 +21,14 @@ public class Comments extends BaseTimeEntity {
     private Long comment_id;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "NOT NULL", name ="post_id", referencedColumnName = "id")
+    @JoinColumn(name ="post_id", referencedColumnName = "id")
     private Posts post_id;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "DEFAULT NULL", name ="user_id", referencedColumnName = "id")
+    @JoinColumn(name ="user_id", referencedColumnName = "id")
     private UserInfo user_id;
 
-    @Column(columnDefinition = "DEFAULT NULL", name = "parent_id")
+    @Column(name = "parent_id")
     private Long parent_id;
 
     @Column(columnDefinition = "TEXT", name = "content")
@@ -41,4 +41,11 @@ public class Comments extends BaseTimeEntity {
         this.parent_id = parent_id;
         this.content = content;
     };
+
+    public void update(Posts post_id, UserInfo user_id, Long parent_id, String content){
+        this.post_id = post_id;
+        this.user_id = user_id;
+        this.parent_id = parent_id;
+        this.content = content;
+    }
 }
