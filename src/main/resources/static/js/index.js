@@ -27,6 +27,9 @@ var main = {
               _this.delete();
             }
         });
+        $('#btn-comment').on('click', function() {
+            _this.comment_save();
+        });
 
     },
     save : function () {
@@ -52,7 +55,7 @@ var main = {
             alert("등록");
             window.location.href = '/';
         }).fail(function() {
-            alert(JSON,stringify(error));
+            alert(JSON.stringify(error));
         });
     },
     update : function () {
@@ -64,11 +67,11 @@ var main = {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 
-        var id = $('#id').val();
+        var post_id = $('#post_').val();
 
         $.ajax({
             type: 'PUT',
-            url: '/api/posts/update/'+id,
+            url: '/api/posts/update/'+post_id,
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
             data: JSON.stringify(data),
@@ -78,19 +81,19 @@ var main = {
             }
         }).done(function() {
             alert('글이 수정되었습니다.');
-            window.location.href = '/posts/'+id;
+            window.location.href = '/posts/'+post_id;
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
     delete : function () {
-        var id = $('#id').val();
+        var post_id = $('#post_id').val();
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 
         $.ajax({
             type: 'DELETE',
-            url: '/api/posts/delete/'+id,
+            url: '/api/posts/delete/'+post_id,
             dataType: 'json',
             contentType:'application/json; charset=utf-8',
             beforeSend : function(xhr)
@@ -103,7 +106,34 @@ var main = {
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
-    }
+    },
+    comment_save : function () {
+            var data = {
+                post_id: $('#post_id').val(),
+                user_id: $('#user_id').val(),
+                parent_id: null,
+                comment: $('#comment').val(),
+            };
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/comments/save',
+                dataType: 'json',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data),
+                beforeSend : function(xhr)
+                {
+                    xhr.setRequestHeader(header, token);
+                }
+            }).done(function(data, textStatus, xhr) {
+                alert("댓글이 등록되었습니다.");
+//                등록한 댓글 innerHTML, 레스폰스 data값 id값으로 설정
+            }).fail(function() {
+                alert(JSON.stringify(error));
+            });
+        },
 };
 
 main.init();

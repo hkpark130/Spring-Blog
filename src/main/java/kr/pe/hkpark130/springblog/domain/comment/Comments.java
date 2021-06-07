@@ -42,10 +42,7 @@ public class Comments extends BaseTimeEntity {
         this.content = content;
     };
 
-    public void update(Posts post_id, UserInfo user_id, Long parent_id, String content){
-        this.post_id = post_id;
-        this.user_id = user_id;
-        this.parent_id = parent_id;
+    public void update(String content){
         this.content = content;
     }
 }

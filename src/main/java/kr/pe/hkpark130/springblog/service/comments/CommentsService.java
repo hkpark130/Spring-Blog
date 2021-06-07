@@ -23,7 +23,7 @@ public class CommentsService {
     @Transactional
     public Long update(Long id, CommentDto requestDto){
         Comments comments = commentsRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 게시물 없음"));
-        comments.update(requestDto.getPost_id(), requestDto.getUser_id(), requestDto.getParent_id(), requestDto.getContent());
+        comments.update(requestDto.getContent());
         return id;
     }
 

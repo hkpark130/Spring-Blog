@@ -11,7 +11,7 @@
         <div class="col-md-12">
                 <form>
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    <input type="hidden" id="id" th:value="${post.id}">
+                    <input type="hidden" id="post_id" th:value="${post.id}">
                     <div class="border" id="result" th:utext="${post.contents}"></div>
                 </form>
                 <a href="/" role="button" class="btn btn-secondary">되돌아가기</a>
@@ -23,6 +23,7 @@
             <div class="col-md-12">
                 <label for="comment"> 댓글 쓰기 </label>
                 <input type="text" class="form-control" id="comment" style="margin-bottom:5px;">
+                <input th:if="${user}" type="hidden" id="user_id" th:value="${user.id}">
                 <div class="row justify-content-end">
                     <button type="button" class="btn btn-primary" id="btn-comment">댓글</button>
                 </div>
@@ -34,7 +35,8 @@
                 <li class="w-100 media">
                     <div class="w-100">
                         <div class="media-body col-md-12">
-                            <h5 th:text="${comment.user_id.username}">Guest</h5>
+                            <h5 th:if="${comment.user_id}" th:text="${comment.user_id.username}"></h5>
+                            <h5 th:unless="${comment.user_id}">Guest</h5>
                         </div>
                         <div class="row media-body">
                             <div class="comment col-md-10" th:text="${comment.content}">

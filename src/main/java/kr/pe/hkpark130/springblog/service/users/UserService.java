@@ -28,6 +28,11 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException((username)));
     } //유저 없으면 에러처리 (필수구현)
 
+    public UserInfo findById(Long user_id) throws UsernameNotFoundException {
+        return userRepository.findById(user_id)
+                .orElseThrow(() -> new UsernameNotFoundException(("해당 유저 없음")));
+    }
+
     /**
      * 회원정보 저장
      *

@@ -2,12 +2,13 @@ package kr.pe.hkpark130.springblog.web.dto;
 
 import kr.pe.hkpark130.springblog.domain.comment.Comments;
 import kr.pe.hkpark130.springblog.domain.posts.Posts;
+import kr.pe.hkpark130.springblog.domain.posts.PostsRepository;
 import kr.pe.hkpark130.springblog.domain.users.UserInfo;
+import kr.pe.hkpark130.springblog.service.posts.PostsService;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @NoArgsConstructor
