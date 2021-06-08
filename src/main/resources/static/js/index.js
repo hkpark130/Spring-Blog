@@ -27,9 +27,6 @@ var main = {
               _this.delete();
             }
         });
-        $('#btn-comment').on('click', function() {
-            _this.comment_save();
-        });
 
     },
     save : function () {
@@ -67,7 +64,7 @@ var main = {
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 
-        var post_id = $('#post_').val();
+        var post_id = $('#post_id').val();
 
         $.ajax({
             type: 'PUT',
@@ -106,34 +103,87 @@ var main = {
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
-    },
-    comment_save : function () {
-            var data = {
-                post_id: $('#post_id').val(),
-                user_id: $('#user_id').val(),
-                parent_id: null,
-                comment: $('#comment').val(),
-            };
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-
-            $.ajax({
-                type: 'POST',
-                url: '/api/comments/save',
-                dataType: 'json',
-                contentType:'application/json; charset=utf-8',
-                data: JSON.stringify(data),
-                beforeSend : function(xhr)
-                {
-                    xhr.setRequestHeader(header, token);
-                }
-            }).done(function(data, textStatus, xhr) {
-                alert("댓글이 등록되었습니다.");
-//                등록한 댓글 innerHTML, 레스폰스 data값 id값으로 설정
-            }).fail(function() {
-                alert(JSON.stringify(error));
-            });
-        },
+    }
 };
 
 main.init();
+
+function comment_save() {
+    var post_id = $('#post_id').val();
+    var data = {
+        post_id: post_id,
+        user_id: $('#user_id').val(),
+        parent_id: null,
+        comment: $('#comment').val(),
+    };
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/comments/save',
+        dataType: 'json',
+        contentType:'application/json; charset=utf-8',
+        data: JSON.stringify(data),
+        beforeSend : function(xhr)
+        {
+            xhr.setRequestHeader(header, token);
+        }
+    }).done(function(data, textStatus, xhr) {
+        alert("댓글이 등록되었습니다.");
+        window.location.href = '/posts/'+post_id;
+    }).fail(function() {
+        alert(JSON.stringify(error));
+    });
+}
+
+function comment_update(comment_id) {
+    var post_id = $('#post_id').val();
+    var data = {
+        comment: $('#comment_'+comment_id)[0].innerHTML,
+    };
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    var comment_id = comment_id;
+
+    $.ajax({
+        type: 'PUT',
+        url: '/api/comments/update/'+comment_id,
+        dataType: 'json',
+        contentType:'application/json; charset=utf-8',
+        data: JSON.stringify(data),
+        beforeSend : function(xhr)
+        {
+            xhr.setRequestHeader(header, token);
+        }
+    }).done(function() {
+        alert('댓글이 수정되었습니다.');
+        window.location.href = '/posts/'+post_id;
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}
+
+function comment_delete(comment_id) {
+    var post_id = $('#post_id').val();
+    var comment_id = comment_id;
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        type: 'DELETE',
+        url: '/api/comments/delete/'+comment_id,
+        dataType: 'json',
+        contentType:'application/json; charset=utf-8',
+        beforeSend : function(xhr)
+        {
+            xhr.setRequestHeader(header, token);
+        }
+    }).done(function() {
+        alert('댓글이 삭제되었습니다.');
+        window.location.href = '/posts/'+post_id;
+    }).fail(function (error) {
+        alert(JSON.stringify(error));
+    });
+}

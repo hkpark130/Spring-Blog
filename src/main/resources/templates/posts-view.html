@@ -25,7 +25,7 @@
                 <input type="text" class="form-control" id="comment" style="margin-bottom:5px;">
                 <input th:if="${user}" type="hidden" id="user_id" th:value="${user.id}">
                 <div class="row justify-content-end">
-                    <button type="button" class="btn btn-primary" id="btn-comment">댓글</button>
+                    <button type="button" class="btn btn-primary" id="btn-comment" onclick="comment_save();">댓글</button>
                 </div>
             </div>
         </div>
@@ -34,17 +34,30 @@
             <ul class="w-100" th:each="comment : ${comments}">
                 <li class="w-100 media">
                     <div class="w-100">
+                        <input type="hidden" id="comment_id" th:value="${comment.comment_id}">
                         <div class="media-body col-md-12">
                             <h5 th:if="${comment.user_id}" th:text="${comment.user_id.username}"></h5>
                             <h5 th:unless="${comment.user_id}">Guest</h5>
                         </div>
                         <div class="row media-body">
-                            <div class="comment col-md-10" th:text="${comment.content}">
+                            <div th:id="|comment_${comment.comment_id}|" class="comment col-md-11" th:text="${comment.comment}">
                                 test comment
                             </div>
-                            <div class="col-md-2">
-                                <button type="button" class="btn btn-light" id="btn-mod">수정</button>
-                                <button type="button" class="btn btn-light" id="btn-del">삭제</button>
+                            <div class="col-md-1">
+                                <nav class="navbar navbar-expand-sm navbar-light">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                                ...
+                                            </a>
+                                            <div class="dropdown-menu" style="min-width: 50px;">
+                                                <a class="dropdown-item" href="#" th:onclick="|comment_reply(${comment.comment_id})|">댓글</a>
+                                                <a class="dropdown-item" href="#" th:onclick="|comment_update(${comment.comment_id})|">수정</a>
+                                                <a class="dropdown-item" href="#" th:onclick="|comment_delete(${comment.comment_id})|">삭제</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>

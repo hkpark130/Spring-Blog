@@ -17,14 +17,14 @@ public class CommentDto {
     private Posts post_id;
     private UserInfo user_id;
     private Long parent_id;
-    private String content;
+    private String comment;
 
     @Builder
-    public CommentDto(Posts post_id, UserInfo user_id, Long parent_id, String content) {
+    public CommentDto(Posts post_id, UserInfo user_id, Long parent_id, String comment) {
         this.post_id = post_id;
         this.user_id = user_id;
         this.parent_id = parent_id;
-        this.content = content;
+        this.comment = comment;
     }
 
     public CommentDto(Comments entity){
@@ -32,7 +32,7 @@ public class CommentDto {
         this.post_id = entity.getPost_id();
         this.user_id = entity.getUser_id();
         this.parent_id = entity.getParent_id();
-        this.content = entity.getContent();
+        this.comment = entity.getComment();
     }
 
     public Comments toEntity() {
@@ -40,7 +40,7 @@ public class CommentDto {
                 .post_id(post_id)
                 .user_id(user_id)
                 .parent_id(parent_id)
-                .content(content)
+                .comment(comment)
                 .build();
     }
 

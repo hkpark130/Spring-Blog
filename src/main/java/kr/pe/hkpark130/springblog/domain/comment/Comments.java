@@ -31,18 +31,18 @@ public class Comments extends BaseTimeEntity {
     @Column(name = "parent_id")
     private Long parent_id;
 
-    @Column(columnDefinition = "TEXT", name = "content")
-    private String content;
+    @Column(columnDefinition = "TEXT", name = "comment")
+    private String comment;
 
     @Builder
-    public Comments(Posts post_id, UserInfo user_id, Long parent_id, String content){
+    public Comments(Posts post_id, UserInfo user_id, Long parent_id, String comment){
         this.post_id = post_id;
         this.user_id = user_id;
         this.parent_id = parent_id;
-        this.content = content;
+        this.comment = comment;
     };
 
-    public void update(String content){
-        this.content = content;
+    public void update(String comment){
+        this.comment = comment;
     }
 }
