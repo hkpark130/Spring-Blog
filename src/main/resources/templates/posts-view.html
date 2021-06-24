@@ -22,6 +22,7 @@
         <div class="row">
             <div class="col-md-12">
                 <label for="comment"> 댓글 쓰기 </label>
+                <input type="password" id="password" style="margin:5px;" placeholder="비밀번호">
                 <input type="text" class="form-control" id="comment" style="margin-bottom:5px;">
                 <input th:if="${user}" type="hidden" id="user_id" th:value="${user.id}">
                 <div class="row justify-content-end">
@@ -53,7 +54,7 @@
                                             <div class="dropdown-menu" style="min-width: 50px;">
                                                 <a class="dropdown-item" href="#" th:onclick="|comment_reply(${comment.comment_id})|">댓글</a>
                                                 <a class="dropdown-item" href="#" th:onclick="|comment_update(${comment.comment_id})|">수정</a>
-                                                <a class="dropdown-item" href="#" th:onclick="|comment_delete(${comment.comment_id})|">삭제</a>
+                                                <a th:if="not ${comment.user_id} or (${user} and (${comment.user_id.id} eq ${user.id}))" class="dropdown-item" href="#" th:onclick="|comment_delete(${comment.comment_id})|">삭제</a>
                                             </div>
                                         </li>
                                     </ul>

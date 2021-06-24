@@ -4,6 +4,7 @@ import kr.pe.hkpark130.springblog.config.handler.AuthenticationSuccessHandlerImp
 import kr.pe.hkpark130.springblog.service.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -45,6 +47,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout() // 로그아웃 관한 설정
                 .logoutSuccessUrl("/login") // 로그아웃 성공시 리다이렉트 주소
                 .invalidateHttpSession(true); //세션 날리기
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override

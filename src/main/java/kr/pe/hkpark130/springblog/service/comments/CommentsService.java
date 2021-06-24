@@ -22,14 +22,14 @@ public class CommentsService {
 
     @Transactional
     public Long update(Long id, CommentDto requestDto){
-        Comments comments = commentsRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 게시물 없음"));
+        Comments comments = commentsRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 댓글 없음"));
         comments.update(requestDto.getComment());
         return id;
     }
 
     @Transactional
     public void delete(Long id) {
-        Comments comments = commentsRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 게시물 없음"));
+        Comments comments = commentsRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 댓글 없음"));
         commentsRepository.delete(comments);
     }
 
@@ -38,5 +38,10 @@ public class CommentsService {
         return commentsRepository.findAll(post_id).stream()
                 .map(CommentDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public CommentDto findById (Long id){
+        Comments entity = commentsRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 댓글 없음"));
+        return new CommentDto(entity);
     }
 }

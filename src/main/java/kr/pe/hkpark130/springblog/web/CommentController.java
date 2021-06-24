@@ -3,10 +3,10 @@ package kr.pe.hkpark130.springblog.web;
 import kr.pe.hkpark130.springblog.domain.posts.Posts;
 import kr.pe.hkpark130.springblog.domain.users.UserInfo;
 import kr.pe.hkpark130.springblog.service.comments.CommentsService;
-import kr.pe.hkpark130.springblog.service.posts.PostsService;
-import kr.pe.hkpark130.springblog.service.users.UserService;
 import kr.pe.hkpark130.springblog.web.dto.CommentDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +20,9 @@ public class CommentController {
     private final CommentsService commentsService;
     private final EntityManager entityManager;
 
+    @Autowired
+    public PasswordEncoder passwordEncoder;
+
     @PostMapping("/api/comments/save")
     @ResponseBody
     public Long save(@RequestBody Map<String, Object> request) {
@@ -27,8 +30,10 @@ public class CommentController {
         UserInfo user_id = (request.get("user_id") != null)? entityManager.getReference( UserInfo.class, Long.valueOf(request.get("user_id").toString()) ):null;
         Long parent_id = (request.get("parent_id") != null)? Long.valueOf(request.get("parent_id").toString()):null;
         String content = (request.get("comment") != null)? request.get("comment").toString():null;
+        String password = (request.get("password") != null)? request.get("password").toString():"";
+        String encodedPassword = passwordEncoder.encode(password);
 
-        return commentsService.save(new CommentDto(post_id, user_id, parent_id, content));
+        return commentsService.save(new CommentDto(post_id, user_id, parent_id, content, encodedPassword));
     }
 
     @PutMapping("/api/comments/update/{id}")
@@ -42,6 +47,18 @@ public class CommentController {
     public Long delete(@PathVariable Long id) {
         commentsService.delete(id);
         return id;
+    }
+
+    @PostMapping("/api/comments/check_password/{id}")
+    @ResponseBody
+    public Long checkPassword(@PathVariable Long id, @RequestBody Map<String, Object> request) {
+        String password = (request.get("password") != null)? request.get("password").toString():"";
+        CommentDto commentDto = commentsService.findById(id);
+        if ( passwordEncoder.matches(password, commentDto.getPassword()) ){
+            return 1L;
+        }else{
+            return 0L;
+        }
     }
 
 }

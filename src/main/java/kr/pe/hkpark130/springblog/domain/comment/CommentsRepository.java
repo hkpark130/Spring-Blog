@@ -12,4 +12,7 @@ public interface CommentsRepository extends JpaRepository<Comments, Long> {
     @Query(value = "SELECT c.* FROM comments c WHERE c.post_id = :post_id", nativeQuery = true)
     List<Comments> findAll(@Param("post_id") Long post_id);
 
+    @Transactional
+    @Query(value = "SELECT count(c.*) FROM comments c WHERE c.comment_id = :comment_id AND c.password = :password", nativeQuery = true)
+    Long checkPassword(@Param("comment_id") Long comment_id, @Param("password") String password);
 }

@@ -34,12 +34,16 @@ public class Comments extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", name = "comment")
     private String comment;
 
+    @Column(name = "password")
+    private String password;
+
     @Builder
-    public Comments(Posts post_id, UserInfo user_id, Long parent_id, String comment){
+    public Comments(Posts post_id, UserInfo user_id, Long parent_id, String comment, String password){
         this.post_id = post_id;
         this.user_id = user_id;
         this.parent_id = parent_id;
         this.comment = comment;
+        this.password = password;
     };
 
     public void update(String comment){

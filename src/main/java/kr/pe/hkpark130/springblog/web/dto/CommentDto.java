@@ -18,13 +18,15 @@ public class CommentDto {
     private UserInfo user_id;
     private Long parent_id;
     private String comment;
+    private String password;
 
     @Builder
-    public CommentDto(Posts post_id, UserInfo user_id, Long parent_id, String comment) {
+    public CommentDto(Posts post_id, UserInfo user_id, Long parent_id, String comment, String password) {
         this.post_id = post_id;
         this.user_id = user_id;
         this.parent_id = parent_id;
         this.comment = comment;
+        this.password = password;
     }
 
     public CommentDto(Comments entity){
@@ -33,6 +35,7 @@ public class CommentDto {
         this.user_id = entity.getUser_id();
         this.parent_id = entity.getParent_id();
         this.comment = entity.getComment();
+        this.password = entity.getPassword();
     }
 
     public Comments toEntity() {
@@ -41,6 +44,7 @@ public class CommentDto {
                 .user_id(user_id)
                 .parent_id(parent_id)
                 .comment(comment)
+                .password(password)
                 .build();
     }
 

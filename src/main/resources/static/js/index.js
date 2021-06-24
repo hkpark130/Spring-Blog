@@ -115,6 +115,7 @@ function comment_save() {
         user_id: $('#user_id').val(),
         parent_id: null,
         comment: $('#comment').val(),
+        password: $('#password').val(),
     };
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
@@ -166,6 +167,11 @@ function comment_update(comment_id) {
 }
 
 function comment_delete(comment_id) {
+
+    if( !check_password(comment_id) ){
+        return ;
+    }
+
     var post_id = $('#post_id').val();
     var comment_id = comment_id;
     var token = $("meta[name='_csrf']").attr("content");
@@ -186,4 +192,40 @@ function comment_delete(comment_id) {
     }).fail(function (error) {
         alert(JSON.stringify(error));
     });
+}
+
+function check_password(comment_id) {
+    var flag = false;
+    var data = {
+        password: prompt('패스워드를 입력하세요.',''),
+    };
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    if(data.password != null){
+        $.ajax({
+            type: 'POST',
+            url: '/api/comments/check_password/'+comment_id,
+            async: false,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data),
+            beforeSend : function(xhr)
+            {
+                xhr.setRequestHeader(header, token);
+            }
+        }).done(function(data, textStatus, xhr) {
+            if (data == 1) {
+                flag = true;
+            } else {
+                alert('비밀번호가 틀렸습니다.');
+                flag = false;
+            }
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+            flag = false;
+        });
+    }
+
+    return flag;
 }
