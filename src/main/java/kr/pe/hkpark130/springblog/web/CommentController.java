@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -19,6 +20,8 @@ public class CommentController {
 
     private final CommentsService commentsService;
     private final EntityManager entityManager;
+
+    private final HttpSession httpSession;
 
     @Autowired
     public PasswordEncoder passwordEncoder;
@@ -32,19 +35,22 @@ public class CommentController {
         String content = (request.get("comment") != null)? request.get("comment").toString():null;
         String password = (request.get("password") != null)? request.get("password").toString():"";
         String encodedPassword = passwordEncoder.encode(password);
+        Long likes = 0L;
 
-        return commentsService.save(new CommentDto(post_id, user_id, parent_id, content, encodedPassword));
+        return commentsService.save(new CommentDto(post_id, user_id, parent_id, content, encodedPassword, likes));
     }
 
     @PutMapping("/api/comments/update/{id}")
     @ResponseBody
-    public Long update(@PathVariable Long id, @RequestBody CommentDto requestDto) {
+    public Long update(@PathVariable Long id, @RequestBody CommentDto requestDto) throws Exception {
+        is_owner(id);
         return commentsService.update(id, requestDto);
     }
 
     @DeleteMapping("/api/comments/delete/{id}")
     @ResponseBody
-    public Long delete(@PathVariable Long id) {
+    public Long delete(@PathVariable Long id) throws Exception {
+        is_owner(id);
         commentsService.delete(id);
         return id;
     }
@@ -58,6 +64,19 @@ public class CommentController {
             return 1L;
         }else{
             return 0L;
+        }
+    }
+
+    public void is_owner(Long id) throws Exception {
+        UserInfo user = (UserInfo) httpSession.getAttribute("user");
+        CommentDto commentDto = commentsService.findById(id);
+
+        if (user != null){
+            if( commentDto.getUser_id() != null && !commentDto.getUser_id().getId().equals(user.getId()) ){
+                throw new Exception("현재 접속중인 유저는 권한이 없습니다.");
+            }
+        } else if(commentDto.getUser_id() != null){
+            throw new Exception("게스트는 권한이 없습니다.");
         }
     }
 

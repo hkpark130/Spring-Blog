@@ -22,8 +22,8 @@
         <div class="row">
             <div class="col-md-12">
                 <label for="comment"> 댓글 쓰기 </label>
-                <input type="password" id="password" style="margin:5px;" placeholder="비밀번호">
-                <input type="text" class="form-control" id="comment" style="margin-bottom:5px;">
+                <input th:if="not ${user}" type="password" id="password" style="margin:5px;" placeholder="비밀번호">
+                <input type="text" class="form-control" id="comment" style="margin-bottom:5px;" required>
                 <input th:if="${user}" type="hidden" id="user_id" th:value="${user.id}">
                 <div class="row justify-content-end">
                     <button type="button" class="btn btn-primary" id="btn-comment" onclick="comment_save();">댓글</button>
@@ -32,13 +32,13 @@
         </div>
 
         <div class="w-100">
-            <ul class="w-100" th:each="comment : ${comments}">
+            <ul class="w-100" th:each="comment : ${comments}" th:id="|ul_comment_${comment.comment_id}|">
                 <li class="w-100 media">
                     <div class="w-100">
                         <input type="hidden" id="comment_id" th:value="${comment.comment_id}">
+                        <input type="hidden" th:id="|comment_user_id_${comment.comment_id}|" th:value="${comment.user_id != null} ? ${comment.user_id.id} : 'Guest'">
                         <div class="media-body col-md-12">
-                            <h5 th:if="${comment.user_id}" th:text="${comment.user_id.username}"></h5>
-                            <h5 th:unless="${comment.user_id}">Guest</h5>
+                            <h5 th:text="${comment.user_id != null} ? ${comment.user_id.username} : 'Guest'"></h5>
                         </div>
                         <div class="row media-body">
                             <div th:id="|comment_${comment.comment_id}|" class="comment col-md-11" th:text="${comment.comment}">
@@ -52,8 +52,8 @@
                                                 ...
                                             </a>
                                             <div class="dropdown-menu" style="min-width: 50px;">
-                                                <a class="dropdown-item" href="#" th:onclick="|comment_reply(${comment.comment_id})|">댓글</a>
-                                                <a class="dropdown-item" href="#" th:onclick="|comment_update(${comment.comment_id})|">수정</a>
+                                                <a class="dropdown-item" href="#" th:onclick="|comment_reply(${comment.comment_id})|">댓글(미구현)</a>
+                                                <a th:if="not ${comment.user_id} or (${user} and (${comment.user_id.id} eq ${user.id}))" class="dropdown-item" href="#" th:onclick="|comment_edit(${comment.comment_id})|">수정</a>
                                                 <a th:if="not ${comment.user_id} or (${user} and (${comment.user_id.id} eq ${user.id}))" class="dropdown-item" href="#" th:onclick="|comment_delete(${comment.comment_id})|">삭제</a>
                                             </div>
                                         </li>
