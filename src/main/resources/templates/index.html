@@ -45,7 +45,7 @@
             <tr th:each="post : ${posts}">
                 <td th:text="${post.id}"></td>
                 <td>
-                    <a th:href="@{'/posts/'+${post.id}}" th:text="${post.title}"/>
+                    <a th:href="@{'/posts/'+${post.id}}" th:text="${post.count_comments > 0} ? |${post.title} [${post.count_comments}]| : ${post.title}"/>
                 </td>
                 <td th:text="${#temporals.format(post.modifiedDate, 'yyyy/MM/dd HH:mm')}"></td>
             </tr>

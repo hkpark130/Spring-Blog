@@ -15,6 +15,7 @@ public class PostDto {
     private String contents;
     private String category;
     private LocalDateTime modifiedDate;
+    private Long count_comments;
 
     @Builder
     public PostDto(String title, String contents, String category) {
@@ -29,7 +30,7 @@ public class PostDto {
         this.contents = entity.getContents();
         this.category = entity.getCategory();
         this.modifiedDate = entity.getModifiedDate();
-    } // 인덱스 화면에 뿌려주기 위한 생성자(findAllDesc) or findById
+    } // 상세보기를 위한 생성자 findById
 
     public Posts toEntity() {
         return Posts.builder()
@@ -38,5 +39,13 @@ public class PostDto {
                 .category(category)
                 .build();
     } //repository로 저장을 위해
+
+    public PostDto(Long id, String title, String category, LocalDateTime modifiedDate, Long count_comments){
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.modifiedDate = modifiedDate;
+        this.count_comments = count_comments;
+    } // 인덱스 화면에 뿌려주기 위한 생성자
 
 }
