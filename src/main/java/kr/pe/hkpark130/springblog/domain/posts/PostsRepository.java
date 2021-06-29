@@ -10,11 +10,11 @@ import java.util.List;
 public interface PostsRepository extends JpaRepository<Posts, Long> {
     //JpaRepository<Entity 클래스, PK타입> ->CRUD메소드 생성됨
     @Transactional
-    @Query(value = "SELECT p.* FROM posts p ORDER BY p.id DESC LIMIT :perPage OFFSET :page", nativeQuery = true)
-    List<Posts> findAllDesc(@Param("page") Integer page, @Param("perPage") Integer perPage);
+    @Query(value = "SELECT p.id, p.title, p.category, p.modified_date, COUNT(c.comment_id) AS count_comments FROM posts p LEFT JOIN comments c ON p.id = c.post_id GROUP BY p.id, c.post_id ORDER BY p.id DESC LIMIT :perPage OFFSET :page", nativeQuery = true)
+    List<Object[]> findAllDesc(@Param("page") Integer page, @Param("perPage") Integer perPage);
 
-    @Query(value = "SELECT p.* FROM posts p WHERE p.category = :category ORDER BY p.id DESC LIMIT :perPage OFFSET :page", nativeQuery = true)
-    List<Posts> findCategoryDesc(@Param("category") String category, @Param("page") Integer page, @Param("perPage") Integer perPage);
+    @Query(value = "SELECT p.id, p.title, p.category, p.modified_date, COUNT(c.comment_id) AS count_comments FROM posts p LEFT JOIN comments c ON p.id = c.post_id WHERE p.category = :category GROUP BY p.id, c.post_id ORDER BY p.id DESC LIMIT :perPage OFFSET :page", nativeQuery = true)
+    List<Object[]> findCategoryDesc(@Param("category") String category, @Param("page") Integer page, @Param("perPage") Integer perPage);
 
     // 버전에 따라 (p.*) 안되는게 있음
 //    @Query(value = "SELECT count(p.*) FROM Posts p", nativeQuery = true)

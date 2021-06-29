@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -37,6 +35,7 @@ public class IndexController {
         } else {
             postList = postsService.findCategoryDesc(category, offsetPage, PER_PAGE);
         }
+
         TreeMap<Integer, String> pageList = postsService.getPageAllList(category, PER_PAGE, PAGE_BLOCK, pageNum);
         model.addAttribute("posts", postList);
         model.addAttribute("pageList", pageList);
