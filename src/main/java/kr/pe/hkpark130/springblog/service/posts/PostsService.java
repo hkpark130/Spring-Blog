@@ -8,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -38,16 +40,38 @@ public class PostsService {
 
     @Transactional
     public List<PostDto> findAllDesc(Integer offsetPage, Integer perPage) {
-        return postsRepository.findAllDesc(offsetPage, perPage).stream()
-                .map(PostDto::new)
-                .collect(Collectors.toList());
+//        return postsRepository.findAllDesc(offsetPage, perPage).stream()
+//                .map(PostDto::new)
+//                .collect(Collectors.toList());
+        List<Object[]> postList = postsRepository.findAllDesc(offsetPage, perPage);
+        List<PostDto> postDtoList = new ArrayList<>();
+
+        for (Object[] object : postList) {
+            postDtoList.add(
+                    new PostDto(((BigInteger) object[0]).longValue(), (String) object[1],
+                            (String) object[2], ((Timestamp) object[3]).toLocalDateTime(), ((BigInteger) object[4]).longValue() )
+            );
+        }
+
+        return postDtoList;
     }
 
     @Transactional
     public List<PostDto> findCategoryDesc(String category, Integer page, Integer perPage) {
-        return postsRepository.findCategoryDesc(category, page, perPage).stream()
-                .map(PostDto::new)
-                .collect(Collectors.toList());
+//        return postsRepository.findCategoryDesc(category, page, perPage).stream()
+//                .map(PostDto::new)
+//                .collect(Collectors.toList());
+        List<Object[]> postList = postsRepository.findCategoryDesc(category, page, perPage);
+        List<PostDto> postDtoList = new ArrayList<>();
+
+        for (Object[] object : postList) {
+            postDtoList.add(
+                    new PostDto(((BigInteger) object[0]).longValue(), (String) object[1],
+                            (String) object[2], ((Timestamp) object[3]).toLocalDateTime(), ((BigInteger) object[4]).longValue() )
+            );
+        }
+
+        return postDtoList;
     }
 
     public PostDto findById (Long id){
