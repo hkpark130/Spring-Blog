@@ -24,7 +24,7 @@ public class IndexController {
     private static final int PAGE_BLOCK = 5;  // 하단 페이지 리스트 수
     private static final int PER_PAGE = 10;   // 한 페이지에 보여줄 게시글 수
 
-    @GetMapping({"/", "/etc", "/network", "/work", "/programming"})
+    @GetMapping({"/", "/etc", "/network", "/work", "/programming", "/cs"})
     public String index(Model model, HttpServletRequest request, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
         String category = request.getRequestURI().substring(1);
         Integer offsetPage = (pageNum - 1) * PER_PAGE;

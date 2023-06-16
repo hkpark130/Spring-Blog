@@ -20,6 +20,7 @@
                         <label for="category">카테고리</label>
                         <select class="form-control" id="category">
                             <option value="etc" th:selected="${post.category}=='etc'">ETC</option>
+                            <option value="cs" th:selected="${post.category}=='cs'">CS 지식</option>
                             <option value="programming" th:selected="${post.category}=='programming'">Programming Language</option>
                             <option value="network" th:selected="${post.category}=='network'">Network</option>
                             <option sec:authorize="hasRole('ROLE_ADMIN')" value="work" th:selected="${post.category}=='work'">Work Experience</option>

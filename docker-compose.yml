@@ -16,3 +16,6 @@ services:
       spring.datasource.url: ${RDS_URL}
       spring.datasource.username: ${RDS_USER}
       spring.datasource.password: ${RDS_PW}
+
+    # environment:
+    #   spring.datasource.driverClassName: "org.h2.Driver"
