@@ -26,3 +26,8 @@ pre {
 .comment {
     border-bottom: 1px solid LightGray;
 }
+
+#result {
+    word-wrap: break-word;
+    overflow-x: auto;
+}
