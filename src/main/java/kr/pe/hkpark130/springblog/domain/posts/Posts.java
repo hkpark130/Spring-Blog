@@ -21,7 +21,7 @@ public class Posts extends BaseTimeEntity {
     @Column(length = 500, nullable = false, name = "title")
     private String title;
 
-    @Column(columnDefinition = "TEXT", name = "contents")
+    @Column(columnDefinition = "LONGTEXT", name = "contents")
     private String contents;
 
     @Column(columnDefinition = "varchar(255) default 'etc'", name = "category")
