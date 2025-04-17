@@ -4,8 +4,6 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-spring_note
-.env
 
 ### STS ###
 .apt_generated
