@@ -8,11 +8,14 @@ import kr.p_e.hkpark130.springblog.dto.*;
 import kr.p_e.hkpark130.springblog.repository.RefreshTokenRepository;
 import kr.p_e.hkpark130.springblog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -39,18 +42,24 @@ public class UserService {
         return new LoginResponseDto(access, refresh);
     }
 
-    public TokenResponseDto refresh(RefreshRequestDto request) {
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(request.getRefreshToken())
-                .orElseThrow(() -> new RuntimeException("리프레시 토큰이 유효하지 않습니다."));
-
-        if (!tokenProvider.validateToken(request.getRefreshToken())) {
-            throw new RuntimeException("리프레시 토큰 만료됨");
+    public TokenResponseDto refresh(String refreshToken) {
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            throw new RuntimeException("리프레시 토큰 누락");
         }
 
-        String username = tokenProvider.getUsername(request.getRefreshToken());
+        RefreshToken entity = refreshTokenRepository.findByToken(refreshToken)
+                .orElseThrow(() -> {
+                    return new RuntimeException("리프레시 토큰이 유효하지 않습니다.");
+                });
+
+        if (!tokenProvider.validateToken(refreshToken)) {
+            throw new RuntimeException("리프레시 토큰 만료됨.");
+        }
+
+        String username = tokenProvider.getUsername(refreshToken);
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
+                .orElseThrow(() -> new RuntimeException("사용자 없음"));
 
         String newAccess = tokenProvider.createToken(user.getUsername(), user.getRole());
 
@@ -76,7 +85,6 @@ public class UserService {
     }
 
     public void logout(User user) {
-        // Refresh token 삭제
         refreshTokenRepository.deleteById(user.getUsername());
     }
 }

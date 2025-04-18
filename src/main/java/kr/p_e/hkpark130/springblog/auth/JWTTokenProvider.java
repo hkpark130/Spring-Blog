@@ -12,9 +12,9 @@ import java.util.Date;
 
 @Component
 public class JWTTokenProvider {
-
+    // TODO: 시크릿 키 숨겨야함
     private static final String SECRET_KEY = "superSecretKeyWithVeryLongRandomSecureValue123456!";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
+    private static final long EXPIRATION_TIME = 1000 * 60 * 30; // 토큰 만료기한 30분
 
     private SecretKey key;
 
@@ -37,7 +37,7 @@ public class JWTTokenProvider {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7))  // 7일
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7))  // 갱신 토큰 7일
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
     }
