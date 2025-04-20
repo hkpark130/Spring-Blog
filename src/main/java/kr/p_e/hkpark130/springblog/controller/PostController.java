@@ -32,12 +32,18 @@ public class PostController {
         return ResponseEntity.ok(postService.getPost(id));
     }
 
+    // PostController에 검색 파라미터 추가
     @GetMapping
     public ResponseEntity<PostsResponseDto> getPosts(
-            @RequestParam(defaultValue = "0") int offset,
-            @RequestParam(defaultValue = "10") int limit
-    ) {
-        return ResponseEntity.ok(postService.getPosts(offset, limit));
+            @RequestParam(defaultValue = "0") int offset, 
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(required = false) String search) {
+        
+        if (search != null && !search.isEmpty()) {
+            return ResponseEntity.ok(postService.searchPosts(search, offset, limit));
+        } else {
+            return ResponseEntity.ok(postService.getPosts(offset, limit));
+        }
     }
 
     @PutMapping("/{id}")

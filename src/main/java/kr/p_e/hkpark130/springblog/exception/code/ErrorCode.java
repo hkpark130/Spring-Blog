@@ -11,6 +11,9 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(404, "COMMENT_001", "댓글이 존재하지 않습니다."),
     UNAUTHORIZED_UPDATE(403, "POST_002", "글을 수정할 권한이 없습니다."),
     UNAUTHORIZED_DELETE(403, "POST_003", "글을 삭제할 권한이 없습니다."),
+    PASSWORD_REQUIRED(400, "COMMENT_002", "비밀번호가 필요합니다."),
+    INVALID_COMMENT_PASSWORD(403, "COMMENT_003", "댓글 비밀번호가 일치하지 않습니다."),
+    UNAUTHORIZED_COMMENT_ACTION(403, "COMMENT_004", "댓글에 대한 권한이 없습니다."),
 
     CATEGORY_NOT_FOUND(404, "CATEGORY_001", "해당 카테고리를 찾을 수 없습니다."),
 

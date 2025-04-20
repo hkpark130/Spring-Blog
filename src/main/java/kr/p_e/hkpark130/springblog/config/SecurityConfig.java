@@ -4,6 +4,7 @@ import kr.p_e.hkpark130.springblog.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -39,10 +40,18 @@ public class SecurityConfig {
                                 "/api/users/refresh",
                                 "/h2-console/**"
                         ).permitAll()
+                        // 게시글 조회 및 댓글 조회/작성 허용
+                        .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/posts/*/comments").permitAll()
+                        // 게스트 댓글 수정/삭제를 위한 경로 추가
+                        .requestMatchers(HttpMethod.PUT, "/api/posts/*/comments/*").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/posts/*/comments/*").permitAll()
+                        // 게스트 댓글 비밀번호 확인 경로 추가
+                        .requestMatchers(HttpMethod.POST, "/api/posts/*/comments/*/verify").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()))  // ✅ 추가
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
