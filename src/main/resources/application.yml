@@ -39,6 +39,12 @@ server:
     include-exception: true
     include-stacktrace: always
 
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
 ---
 spring:
   config:

@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +31,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
@@ -44,8 +45,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/posts/*/comments").permitAll()
                         // 게스트 댓글 수정/삭제를 위한 경로 추가
-                        .requestMatchers(HttpMethod.PUT, "/api/posts/*/comments/*").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/posts/*/comments/*").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/posts/*/comments/*/guest").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/posts/*/comments/*/guest").permitAll()
                         // 게스트 댓글 비밀번호 확인 경로 추가
                         .requestMatchers(HttpMethod.POST, "/api/posts/*/comments/*/verify").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

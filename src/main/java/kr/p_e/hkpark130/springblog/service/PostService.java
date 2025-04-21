@@ -37,7 +37,6 @@ public class PostService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    @CacheEvict(value = {"posts", "commentCounts"}, allEntries = true)
     public Long createPost(PostRequestDto dto, String username) {
         User user = findUserByUsername(username);
 
@@ -74,14 +73,8 @@ public class PostService {
                 pageable.getPageNumber(), pageable.getPageSize());
     }
 
-    public List<PostResponseDto> getAllPosts() {
-        return postRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-
     @Transactional
-    @CacheEvict(value = {"posts", "commentCounts"}, key = "#postId")
+    @CacheEvict(value = {"posts"}, key = "#postId")
     public void updatePost(Long postId, PostRequestDto dto, String username) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
@@ -147,6 +140,31 @@ public class PostService {
                 .collect(Collectors.toList());
 
         return new PostsResponseDto(postDtos, (int) postPage.getTotalElements(),
+                pageable.getPageNumber(), pageable.getPageSize());
+    }
+
+    public PostsResponseDto searchPostsBySearchAndCategory(String keyword, Long categoryId, int offset, int limit) {
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Page<Post> postsPage = postRepository.findByTitleContainingOrContentContainingAndCategoryId(
+                keyword, categoryId, pageable);
+
+        List<PostResponseDto> postDtos = postsPage.getContent().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
+        return new PostsResponseDto(postDtos, (int) postsPage.getTotalElements(),
+                pageable.getPageNumber(), pageable.getPageSize());
+    }
+
+    public PostsResponseDto getPostsByCategory(Long categoryId, int offset, int limit) {
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Page<Post> postsPage = postRepository.findByCategoryId(categoryId, pageable);
+
+        List<PostResponseDto> postDtos = postsPage.getContent().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
+        return new PostsResponseDto(postDtos, (int) postsPage.getTotalElements(),
                 pageable.getPageNumber(), pageable.getPageSize());
     }
 }

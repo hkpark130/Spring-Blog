@@ -35,13 +35,25 @@ public class PostController {
     // PostController에 검색 파라미터 추가
     @GetMapping
     public ResponseEntity<PostsResponseDto> getPosts(
-            @RequestParam(defaultValue = "0") int offset, 
+            @RequestParam(defaultValue = "0") int offset,
             @RequestParam(defaultValue = "10") int limit,
-            @RequestParam(required = false) String search) {
-        
-        if (search != null && !search.isEmpty()) {
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long categoryId) {
+
+        // 검색어와 카테고리 모두 있는 경우
+        if (search != null && !search.isEmpty() && categoryId != null) {
+            return ResponseEntity.ok(postService.searchPostsBySearchAndCategory(search, categoryId, offset, limit));
+        }
+        // 검색어만 있는 경우
+        else if (search != null && !search.isEmpty()) {
             return ResponseEntity.ok(postService.searchPosts(search, offset, limit));
-        } else {
+        }
+        // 카테고리만 있는 경우
+        else if (categoryId != null) {
+            return ResponseEntity.ok(postService.getPostsByCategory(categoryId, offset, limit));
+        }
+        // 모두 없는 경우 (전체 목록)
+        else {
             return ResponseEntity.ok(postService.getPosts(offset, limit));
         }
     }

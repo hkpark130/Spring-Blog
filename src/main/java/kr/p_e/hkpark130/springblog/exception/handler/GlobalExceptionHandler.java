@@ -3,6 +3,7 @@ package kr.p_e.hkpark130.springblog.exception.handler;
 import kr.p_e.hkpark130.springblog.exception.CustomException;
 import kr.p_e.hkpark130.springblog.exception.code.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,18 +31,10 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<?> handleGeneralException(Exception ex) {
-//        log.error("[Exception] 서버 에러 발생", ex);
-//
-//        Map<String, Object> errorResponse = new HashMap<>();
-//        errorResponse.put("timestamp", LocalDateTime.now());
-//        errorResponse.put("status", ErrorCode.INTERNAL_SERVER_ERROR.getStatus());
-//        errorResponse.put("error", ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
-//        errorResponse.put("code", ErrorCode.INTERNAL_SERVER_ERROR.getCode());
-//
-//        return ResponseEntity
-//                .status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus())
-//                .body(errorResponse);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGenericException(Exception ex) {
+        log.error("error", ex);
+        String errorMessage = "An error occurred: " + ex.getMessage();
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
