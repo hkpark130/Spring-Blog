@@ -8,6 +8,13 @@ VALUES
 INSERT INTO category (name) VALUES ('java');
 INSERT INTO category (name) VALUES ('spring');
 INSERT INTO category (name) VALUES ('react');
+INSERT INTO category (name) VALUES ('database');
+INSERT INTO category (name) VALUES ('ai');
+INSERT INTO category (name) VALUES ('cloud');
+INSERT INTO category (name) VALUES ('devops');
+INSERT INTO category (name) VALUES ('security');
+INSERT INTO category (name) VALUES ('architecture');
+INSERT INTO category (name) VALUES ('Work Experience');
 
 -- 기존 기본 게시글 (ID: 1-51)
 INSERT INTO posts (id, title, content, category_id, author_id, created_at, updated_at)

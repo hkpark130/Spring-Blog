@@ -11,7 +11,8 @@ import lombok.*;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false, length = 50)
@@ -20,6 +21,10 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
+    // 이메일 필드 추가 (nullable = true로 설정)
+    // @Column(nullable = true)
+    // private String email;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -27,6 +32,7 @@ public class User extends BaseTimeEntity {
     public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
+        // this.email = email;
         this.role = role;
     }
 

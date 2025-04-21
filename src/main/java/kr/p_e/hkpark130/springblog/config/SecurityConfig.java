@@ -39,6 +39,7 @@ public class SecurityConfig {
                                 "/api/users/login",
                                 "/api/users/register",
                                 "/api/users/refresh",
+                                "/api/categories",
                                 "/h2-console/**"
                         ).permitAll()
                         // 게시글 조회 및 댓글 조회/작성 허용
