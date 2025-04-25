@@ -1,15 +1,15 @@
--- INSERT INTO users (id, username, password, role, created_at, updated_at)
--- VALUES
---     (1, 'test', '$2a$10$jAkm342z0fAPlKZBjmSrH.DndspqidWOKaLPMJ2Vc4LoCQ2/g2jhe', 'USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
--- INSERT INTO users (id, username, password, role, created_at, updated_at)
--- VALUES
---     (2, 'admin', '$2a$10$jAkm342z0fAPlKZBjmSrH.DndspqidWOKaLPMJ2Vc4LoCQ2/g2jhe', 'ADMIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO users (id, username, password, role, created_at, updated_at)
+VALUES
+    (1, 'test', '$2a$10$jAkm342z0fAPlKZBjmSrH.DndspqidWOKaLPMJ2Vc4LoCQ2/g2jhe', 'USER', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO users (id, username, password, role, created_at, updated_at)
+VALUES
+    (2, 'admin', '$2a$10$jAkm342z0fAPlKZBjmSrH.DndspqidWOKaLPMJ2Vc4LoCQ2/g2jhe', 'ADMIN', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO category (name) VALUES ('Network');
+INSERT INTO category (name) VALUES ('ETC');
 INSERT INTO category (name) VALUES ('Work Experience');
+INSERT INTO category (name) VALUES ('Network');
 INSERT INTO category (name) VALUES ('Programming Language');
 INSERT INTO category (name) VALUES ('CS 지식');
-INSERT INTO category (name) VALUES ('ETC');
 
 -- 기존 기본 게시글 (ID: 1-51)
 INSERT INTO posts (id, title, content, category_id, author_id, created_at, updated_at)

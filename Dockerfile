@@ -1,9 +1,23 @@
-FROM openjdk:8-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine AS build
+WORKDIR /app
+
+# 의존성 캐시 최적화
+COPY build.gradle settings.gradle gradlew ./
+COPY gradle ./gradle
+RUN ./gradlew dependencies --no-daemon
+
+# 소스 복사 및 빌드
+COPY . .
+RUN ./gradlew clean build -x test --no-daemon
+
+# 실행 스테이지
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
 ENV TZ=Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN mkdir /app
-WORKDIR /app
-ENTRYPOINT ["sh","-c","java -jar -Dspring.profiles.active=docker-compose \
-/app/build/libs/spring-blog-0.0.1-SNAPSHOT.jar"]
-# ENTRYPOINT ["sh","-c","java -jar -Dspring.profiles.active=local \
-# /app/build/libs/spring-blog-0.0.1-SNAPSHOT.jar"]
+
+# 빌드 스테이지에서 생성된 JAR 파일만 복사
+COPY --from=build /app/build/libs/springblog-*.jar app.jar
+
+# 애플리케이션 실행 (프로파일은 환경변수로 주입)
+ENTRYPOINT [ "java", "-jar", "app.jar" ]

@@ -1,25 +1,20 @@
 spring:
   profiles:
     active: local
+
 ---
 spring:
   config:
     activate:
       on-profile: local
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: spring
-    password: 1
-    url: jdbc:mariadb://111.111.111.111:3306/spring
+    driver-class-name: org.h2.Driver
   jpa:
-    #    defer-datasource-initialization: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
+    defer-datasource-initialization: true
   h2:
     console:
       enabled: true
@@ -28,7 +23,7 @@ spring:
         web-allow-others: true
   sql:
     init:
-      mode: never
+      mode: always
 
 server:
   port: 8100
@@ -41,19 +36,31 @@ logging:
     org:
       springframework:
         security: DEBUG
+        jdbc:
+          datasource:
+            init:
+              ScriptUtils: DEBUG
 
 ---
 spring:
   config:
     activate:
       on-profile: docker-compose
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: false
+  sql:
+    init:
+      mode: never
+
 server:
-  ssl:
-    enable: true
-    key-store: "classpath:keystore.p12"
-  #     key-store-password: '${KEY_PW}'
-  #     key-password: '${KEY_PW}'
   port: 8100
+  error:
+    include-exception: false
+    include-stacktrace: never

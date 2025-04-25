@@ -2,20 +2,17 @@ version: "3.8"
 services:
   spring:
     container_name: backend-spring-app
-    build: .
-    expose:
-      - 8100
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8100:8100"
-    volumes:
-      - .:/app
     environment:
-      server.ssl.key-password: ${KEY_PW}
-      server.ssl.key-store-password: ${KEY_PW}
-      spring.datasource.driverClassName: "org.mariadb.jdbc.Driver"
-      spring.datasource.url: ${RDS_URL}
-      spring.datasource.username: ${RDS_USER}
-      spring.datasource.password: ${RDS_PW}
-
-    # environment:
-    #   spring.datasource.driverClassName: "org.h2.Driver"
+      - SPRING_PROFILES_ACTIVE=${PROFILE}
+      - spring.datasource.url=${RDS_URL}
+      - spring.datasource.username=${RDS_USER}
+      - spring.datasource.password=${RDS_PW}
+      - TZ=Asia/Seoul
+    volumes:
+      - ./src/main/resources:/app/resources
+    restart: unless-stopped
