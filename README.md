@@ -1,3 +1,6 @@
+네트워크 생성
+`docker network create ext-network`
+
 ```.env
 PROFILE=local
 RDS_URL=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1

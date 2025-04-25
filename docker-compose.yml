@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8100:8100"
+    networks:
+      - ext-network
     environment:
       - SPRING_PROFILES_ACTIVE=${PROFILE}
       - spring.datasource.url=${RDS_URL}
@@ -16,3 +18,7 @@ services:
     volumes:
       - ./src/main/resources:/app/resources
     restart: unless-stopped
+
+networks:
+  ext-network:
+    external: true
