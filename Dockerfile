@@ -19,7 +19,7 @@ ENV TZ=Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # 빌드 스테이지에서 생성된 JAR 파일만 복사
-COPY --from=build /app/build/libs/*.jar ./app.jar
+COPY --from=build /app/build/libs/*SNAPSHOT.jar ./app.jar
 
 # 애플리케이션 실행 (프로파일은 환경변수로 주입)
 ENTRYPOINT [ "java", "-jar", "app.jar" ]

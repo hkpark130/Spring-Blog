@@ -40,8 +40,8 @@ public class SecurityConfig {
                                 "/api/users/register",
                                 "/api/users/refresh",
                                 "/api/categories",
-                                "/h2-console/**"
-                        ).permitAll()
+                                "/h2-console/**")
+                        .permitAll()
                         // 게시글 조회 및 댓글 조회/작성 허용
                         .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/posts/*/comments").permitAll()
@@ -51,8 +51,7 @@ public class SecurityConfig {
                         // 게스트 댓글 비밀번호 확인 경로 추가
                         .requestMatchers(HttpMethod.POST, "/api/posts/*/comments/*/verify").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -63,10 +62,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
-            "http://localhost:5173", "https://localhost:5173", 
-            "http://localhost", "https://localhost",
-            "http://*", "https://*"
-        ));
+                "http://localhost:5173", "https://localhost:5173",
+                "http://localhost", "https://localhost",
+                "https://hkpark130.p-e.kr",
+                "http://*", "https://*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

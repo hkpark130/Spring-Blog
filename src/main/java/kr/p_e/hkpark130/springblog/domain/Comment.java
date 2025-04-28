@@ -23,20 +23,20 @@ public class Comment extends BaseTimeEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_post_id"))
     private Post post;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_comments_user_id"))
     private User author;
-    
+
     // 게스트 댓글을 위한 필드 추가
     @Column
     private String guestName;
-    
+
     @Column
     private String password; // 해시된 비밀번호 저장
-    
+
     @Column(nullable = false)
     private boolean isGuest;
 }
