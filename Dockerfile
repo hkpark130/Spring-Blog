@@ -4,6 +4,7 @@ WORKDIR /app
 # 의존성 캐시 최적화
 COPY build.gradle settings.gradle gradlew ./
 COPY gradle ./gradle
+RUN chmod +x gradlew
 RUN ./gradlew dependencies --no-daemon
 
 # 소스 복사 및 빌드
