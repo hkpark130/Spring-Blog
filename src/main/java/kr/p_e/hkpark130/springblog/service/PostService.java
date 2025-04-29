@@ -144,7 +144,7 @@ public class PostService {
     }
 
     public PostsResponseDto searchPostsBySearchAndCategory(String keyword, Long categoryId, int offset, int limit) {
-        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Pageable pageable = PageRequest.of(offset / limit, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<Post> postsPage = postRepository.findByTitleContainingOrContentContainingAndCategoryId(
                 keyword, categoryId, pageable);
 
@@ -157,7 +157,7 @@ public class PostService {
     }
 
     public PostsResponseDto getPostsByCategory(Long categoryId, int offset, int limit) {
-        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Pageable pageable = PageRequest.of(offset / limit, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<Post> postsPage = postRepository.findByCategoryId(categoryId, pageable);
 
         List<PostResponseDto> postDtos = postsPage.getContent().stream()
