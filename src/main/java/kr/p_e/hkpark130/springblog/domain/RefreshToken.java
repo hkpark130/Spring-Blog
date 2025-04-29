@@ -10,6 +10,7 @@ import lombok.*;
 public class RefreshToken {
 
     @Id
+    @Column(name = "username", length = 191)
     private String username;
 
     @Column(nullable = false)
