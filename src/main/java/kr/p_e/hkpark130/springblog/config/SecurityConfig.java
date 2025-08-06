@@ -40,7 +40,8 @@ public class SecurityConfig {
                                 "/api/users/register",
                                 "/api/users/refresh",
                                 "/api/categories",
-                                "/h2-console/**")
+                                "/h2-console/**",
+                                "/health")
                         .permitAll()
                         // 게시글 조회 및 댓글 조회/작성 허용
                         .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
