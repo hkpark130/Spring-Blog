@@ -53,8 +53,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       pool-name: spring-hikari
-      maximum-pool-size: 4 # CPU 코어 수 x 2~4 범위에서 조정
-      minimum-idle: 2
+      minimum-idle: 5
       connection-timeout: 30000 # 30s
       idle-timeout: 300000 # 5m
       max-lifetime: 1200000 # 20m, wait_timeout(8h)보다 훨씬 작게
