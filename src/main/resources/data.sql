@@ -204,3 +204,5 @@ INSERT INTO comments (content, post_id, user_id, is_guest, guest_name, created_a
 ('알고리즘 설명이 명확해서 이해하기 쉬웠어요.', 82, NULL, true, '알고리즘 학습자', '2023-03-24 11:30:00', '2023-03-24 11:30:00'),
 ('트리와 그래프에 대한 개념을 잘 잡을 수 있었습니다.', 83, 2, false, NULL, '2023-03-25 09:15:00', '2023-03-25 09:15:00'),
 ('HTTP 프로토콜에 대한 이해가 깊어졌어요!', 84, NULL, true, '웹 개발자', '2023-03-26 10:00:00', '2023-03-26 10:00:00');
+
+ALTER TABLE posts ALTER COLUMN id RESTART WITH 154;
