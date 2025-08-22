@@ -4,6 +4,7 @@ import kr.p_e.hkpark130.springblog.auth.UserPrincipal;
 import kr.p_e.hkpark130.springblog.dto.PostRequestDto;
 import kr.p_e.hkpark130.springblog.dto.PostResponseDto;
 import kr.p_e.hkpark130.springblog.dto.PostsResponseDto;
+import kr.p_e.hkpark130.springblog.dto.PostSitemapDto;
 import kr.p_e.hkpark130.springblog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,7 @@ public class PostController {
     @PostMapping
     public ResponseEntity<Long> createPost(
             @RequestBody PostRequestDto dto,
-            @AuthenticationPrincipal UserPrincipal principal
-    ) {
+            @AuthenticationPrincipal UserPrincipal principal) {
         return ResponseEntity.ok(postService.createPost(dto, principal.getUsername()));
     }
 
@@ -62,8 +62,7 @@ public class PostController {
     public ResponseEntity<Void> updatePost(
             @PathVariable Long id,
             @RequestBody PostRequestDto dto,
-            @AuthenticationPrincipal UserPrincipal principal
-    ) {
+            @AuthenticationPrincipal UserPrincipal principal) {
         postService.updatePost(id, dto, principal.getUsername());
         return ResponseEntity.ok().build();
     }
@@ -71,9 +70,14 @@ public class PostController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(
             @PathVariable Long id,
-            @AuthenticationPrincipal UserPrincipal principal
-    ) {
+            @AuthenticationPrincipal UserPrincipal principal) {
         postService.deletePost(id, principal.getUsername());
         return ResponseEntity.ok().build();
+    }
+
+    // 전체 게시글을 사이트맵용 최소 필드로 반환 (내부적으로 페이징 반복)
+    @GetMapping("/sitemap/all")
+    public ResponseEntity<List<PostSitemapDto>> getAllForSitemap() {
+        return ResponseEntity.ok(postService.findAllForSitemap());
     }
 }
